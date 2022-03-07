@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+
+	<title>BookShop</title>
+</head>
+
+<body>
+
+<div id="app"></div>
+
+<script src="https://unpkg.com/mithril/mithril.js"></script>
+
+<script src="src/models/StopWatch.js"></script>
+
+<script src="src/components/StopWatchDisplay.js"></script>
+
+<script>
+
+	app = function(){
+
+		return {
+			view : function(){
+				return (
+					m('div',
+						m('strong', 'Stopwatch 1:'),
+						m(StopWatchDisplay),
+
+						m('hr'),
+						m('strong', 'Stopwatch 2:'),
+						m(StopWatchDisplay),
+					)
+				)
+			},
+		}
+	}
+ 
+
+	// m.mount(document.getElementById("app"), StopWatchDisplay)
+	m.mount(document.getElementById("app"), app)
+
+	
+</script>
+
+</body>
+</html>

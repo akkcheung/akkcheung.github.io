@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+<head>
+  <link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+	<title>Mithril JS Demo</title>
+</head>
+
+<body>
+
+<div class="container">
+
+<div id="app" class="section"></div>
+
+</div>
+
+
+
+<script src="https://unpkg.com/mithril/mithril.js"></script>
+<script src="https://unpkg.com/mithril/stream/stream.js"></script>
+
+<script src="src/Layout.js"></script>
+
+<script src="src/models/Entry.js"></script>
+<script src="src/components/EntryForm.js"></script>
+<script src="src/components/EntryList.js"></script>
+<script src="src/components/Volunteers.js"></script>
+<script src="src/components/Total.js"></script>
+<script src="src/components/Coupon.js"></script>
+
+<script src="src/models/TicTacToe.js"></script>
+<script src="src/components/Board.js"></script>
+
+<script src="src/models/Book.js"></script>
+<script src="src/components/BookList.js"></script>
+<script src="src/components/Cart.js"></script>
+
+<script src="src/models/StopWatch.js"></script>
+<script src="src/components/StopWatchDisplay.js"></script>
+<script src="src/components/CompositeStopWatchDisplay.js"></script>
+
+<script>
+	// Seed some data
+	Entry.create({
+		"enteredAt": 1443018758199,
+		"volunteers" : [
+			{ name: "Alice", email: "alice@example.com"},
+			{ name: "Bod", email: "bob@example.com" },
+		]
+	})
+
+  Entry.create({
+    "enteredAt": 1443019047227,
+    "volunteers": [
+      { name: "Carl", email: "carl@example.com" },
+      { name: "Dan", email: "dan@example.com" },
+      { name: "Erl", email: "erl@example.com" },
+    ]
+  })
+
+	m.route(document.getElementById('app'), '/', {
+		'/': { 
+			render: function() {
+				return m(Layout, m(EntryList))
+			}
+		},
+		'/list': {  
+			render: function() {
+				return m(Layout, m(EntryList))
+			}
+		},
+		'/entries/new': { 
+			render: function() {
+				return m(Layout, m(EntryForm))
+			}
+		},
+
+		'/board' : { 
+			render: function() {
+				return m(Layout, m(Board))
+			}
+		},
+
+		'/bookshop' : { 
+			render: function() {
+				return m(Layout, m(Cart))
+			}
+		},
+
+		'/stopwatch' : { 
+			render: function() {
+				return m(Layout, m(CompositeStopWatchDisplay))
+			}
+		},
+
+	})
+	
+</script>
+
+</body>
+</html>
