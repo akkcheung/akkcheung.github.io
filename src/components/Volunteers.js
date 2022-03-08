@@ -16,7 +16,12 @@ window.Volunteers = {
 					}),
 					m('br'),
 					m('label', "Email:"),
-					m('input[type=text]', { value: volunteer.email }),
+					m('input[type=text]', {
+						value: volunteer.email,
+						onchange(e) {
+							volunteer.email = e.target.value
+						}
+					}),
 
 					showRemove && 
 						m('button', { onclick(){ remove(idx)}}, 'remove')

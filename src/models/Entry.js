@@ -23,8 +23,10 @@
 
 	Entry.volunteerVM = function () {
 		return {
-			name: '[Your name]',
-			email: '[Your email]'
+			//name: '[Your name]',
+			//email: '[Your email]'
+			name: '',
+			email: '',
 		}
 	}
 
