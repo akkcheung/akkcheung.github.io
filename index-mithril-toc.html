@@ -1,8 +1,10 @@
 <!doctype html>
 <html>
 <head>
-  <link rel="stylesheet" href="style.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style-whac-a-mole.css">
 
 	<title>Mithril JS Demo</title>
 </head>
@@ -11,7 +13,8 @@
 
 <div class="container">
 
-<div id="app" class="section"></div>
+<!-- <div id="app" class="section"></div> -->
+<div id="app"></div>
 
 </div>
 
@@ -39,6 +42,9 @@
 <script src="src/models/StopWatch.js"></script>
 <script src="src/components/StopWatchDisplay.js"></script>
 <script src="src/components/CompositeStopWatchDisplay.js"></script>
+
+<script src="src/models/Whac-a-mole.js"></script>
+<script src="src/components/Grid.js"></script>
 
 <script>
 	// Seed some data
@@ -91,6 +97,12 @@
 		'/stopwatch' : { 
 			render: function() {
 				return m(Layout, m(CompositeStopWatchDisplay))
+			}
+		},
+
+		'/whacamole' : { 
+			render: function() {
+				return m(Layout, m(Grid))
 			}
 		},
 
