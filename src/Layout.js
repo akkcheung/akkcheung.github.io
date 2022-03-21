@@ -12,6 +12,7 @@ const Layout = {
 					m('li', m(m.route.Link, {href: "/bookshop"}, "Book Shop")),
 					m('li', m(m.route.Link, {href: "/stopwatch"}, "Stop Watch")),
 					m('li', m(m.route.Link, {href: "/whacamole"}, "Whac-A-Mole")),
+					m('li', m(m.route.Link, {href: "/chart"}, "Dynamic Chart")),
 					),
 				]),
 			),
