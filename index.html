@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Karaoke App</title>
+    <title></title>
     <!-- link rel="stylesheet" href="styles.css" -->
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mini.css/3.0.1/mini-default.min.css">
@@ -11,23 +11,43 @@
 
 </head>
 <body>
+
     <!-- div class="karaoke-container" -->
     <div class="container">
 
-      <h3>詩歌 敬拜</h3>
+      <header>
+        <a href="#" class="logo">詩歌 敬拜</a>
+      </header>
 
-      <div class="card">
-          <audio id="audio" controls>
-              <source src="song.mp3" type="audio/mpeg">
-              Your browser does not support the audio element.
-          </audio>
-          <mark class="tertiary">
-            <div id="lyrics" class="lyrics">
-                <!-- Lyrics will be displayed here -->
-            </div>
-          </mark>
+      <div class="row">
+
+        <div class="col-sm-3">
+          <nav>
+            <span>中文歌</span>
+            <a href="#" class="sublink-1" value="song">我向你禱告</a>
+            <a href="#" class="sublink-1" value="song_a">建殿者的呼聲</a>
+            <span>英文歌</span>
+            <a href="#" class="sublink-1">Item 2.1</a>
+          </nav>
+        </div>  
+
+        <div class="col-sm-9">
+          <div class="card">
+            <audio id="audio" controls>
+                <source src="song.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <mark class="tertiary">
+              <div id="lyrics" class="lyrics">
+                  <!-- Lyrics will be displayed here -->
+              </div>
+            </mark>
+          </div>
+        </div>
+
       </div>
-    </div>
+
+    </div> <!-- container -->
     <script src="app.js"></script>
 </body>
 </html>
