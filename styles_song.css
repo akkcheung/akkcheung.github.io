@@ -1,0 +1,20 @@
+.lyrics {
+    margin-top: 20px;
+    font-size: 24px;
+    
+    /* background-color: rgba(0, 0, 0, 0.1);  Semi-transparent background */
+
+    background-image: url('background_song.jpg');
+    background-size: cover;
+    background-position: center; 
+
+    padding: 20px;
+    border-radius: 10px;
+
+    /* box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); */
+
+    min-height: 100px; /* Ensure there's always space for lyrics */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

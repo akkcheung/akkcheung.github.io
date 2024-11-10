@@ -1,14 +1,11 @@
 const audio = document.getElementById('audio');
 const lyricsContainer = document.getElementById('lyrics');
 
-// Example lyrics with timestamps in seconds
-
 let lyrics=[]
-
 let currentLine = 0;
 
 audio.addEventListener('timeupdate', () => {
-    if (currentLine < lyrics.length && audio.currentTime >= lyrics[currentLine].time) {
+    if (currentLine < lyrics.length && audio.currentTime > lyrics[currentLine].time) {
         lyricsContainer.innerText = lyrics[currentLine].text;
         currentLine++;
     }
@@ -30,23 +27,30 @@ function handleLinkClick(event){
   const clickedLink = event.target;
   const linkValue = clickedLink.getAttribute('value');
 
-  console.log('Link value:', linkValue)
+  console.log('Link text:', clickedLink.text )
+  
+  lyricsContainer.innerText = clickedLink.text
+  currentLine = 0
 
   audio.src = linkValue + ".mp3"
 
   fetch(linkValue + ".lrc")
     .then(response => response.text())
     .then(data => {
-        const parsedLyrics = parseLRC(data);
-        console.log(parsedLyrics);
-    });
+        // const parsedLyrics = parseLRC(data);
+        lyrics = parseLRC(data);
+        // console.log(parsedLyrics);
+
+    })
+    .then(audio.play())
   
 }
 
 function parseLRC(lrcText) {
     const lines = lrcText.split('\n');
     const regex = /^\[(\d{2}):(\d{2}\.\d{2})\](.*)$/;
-    // const lyrics = [];
+    const lyrics = [];
+    // lyrics = []
 
     lines.forEach(line => {
         const match = line.match(regex);
