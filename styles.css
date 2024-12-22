@@ -1,0 +1,9 @@
+img {
+  max-height: 200px ;
+  height: auto;
+}
+
+div.container {
+  padding: 10px;
+  text-align: center;
+}
