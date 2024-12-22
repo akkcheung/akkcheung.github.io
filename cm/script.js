@@ -58,20 +58,40 @@ function createBoard() {
   // shuffle(cards);
   
   cards = [...cardValuesTmp, ...cardValuesTmp]
-  shuffle(cards)
+  cards = shuffle(cards)
+
+  console.log(cards)
 
   // Clear the board and reset variables
   gameBoard.innerHTML = "";
   flippedCards = [];
   matchedPairs = 0;
+  
+// cardImage.src = `https://deckofcardsapi.com/static/img/${card.value == '10'     ? card.value[1].toUpperCase() : card.value[0].toUpperCase()}${card.suit[0].toUppe    rCase()}.png`;
 
   // Create card elements
-  cards.forEach(value => {
-    const card = document.createElement("div");
-    card.classList.add("card");
-    card.dataset.value = value; // Store the card's value
-    card.addEventListener("click", flipCard);
-    gameBoard.appendChild(card);
+  // cards.forEach( value  => {
+  cards.forEach( card  => {
+    // const card = document.createElement("div");
+    const cardDiv = document.createElement("div");
+
+    // card.classList.add("card");
+    cardDiv.classList.add("card");
+
+    // card.dataset.value = value; // Store the card's value
+    cardDiv.dataset.value = `${card.value == '10' ? card.value[1].toUpperCase() : card.value[0].toUpperCase()}${card.suit[0].toUpperCase()}`
+
+    const cardImage = document.createElement('img');
+
+
+    cardImage.src = `https://deckofcardsapi.com/static/img/back.png`;
+    cardDiv.appendChild(cardImage);
+
+    // card.addEventListener("click", flipCard);
+    cardDiv.addEventListener("click", flipCard);
+    
+    // gameBoard.appendChild(card);
+    gameBoard.appendChild(cardDiv);
   });
 
   message.textContent = ""; // Clear any previous messages
@@ -88,7 +108,10 @@ function flipCard() {
 
   // Flip the card
   card.classList.add("flipped");
-  card.textContent = card.dataset.value;
+  // card.textContent = card.dataset.value;
+
+  let img = card.firstChild
+  img.src = `https://deckofcardsapi.com/static/img/${card.dataset.value}.png`;
 
   flippedCards.push(card);
 
@@ -120,7 +143,11 @@ function checkMatch() {
     setTimeout(() => {
       flippedCards.forEach(card => {
         card.classList.remove("flipped");
-        card.textContent = "";
+        
+        let img = card.firstChild
+        img.src = `https://deckofcardsapi.com/static/img/back.png`;
+
+        // card.textContent = "";
       });
       flippedCards = [];
     }, 1000);
