@@ -128,7 +128,12 @@ function checkMatch() {
   if (card1.dataset.value === card2.dataset.value) {
     // Match found
     matchedPairs++;
-    flippedCards.forEach(card => card.classList.add("hidden")); // Hide matched cards
+
+    // flippedCards.forEach(card => card.classList.add("hidden")); // Hide matched cards
+    setTimeout(() => {
+      flippedCards.forEach(card => card.classList.add("hidden")); // Hide matched cards
+      flippedCards = [];
+    }, 1000);
 
     // Check for win condition
     if (matchedPairs === cards.length / 2) {
@@ -136,7 +141,7 @@ function checkMatch() {
       message.textContent = "🎉 You Win! All pairs matched!";
     }
 
-    flippedCards = [];
+    // flippedCards = [];
     
   } else {
     // No match - flip the cards back after a short delay
