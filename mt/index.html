@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Making 10 Card Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 20;
+            background-color: #2e8b57;
+        }
+        button {
+          margin: 10px;
+          padding: 10px 20px;
+          font-size: 16px;
+          cursor: pointer;
+        }
+        #game-container {
+            text-align: center;
+        }
+        .player-hand {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .card {
+            width: 100px;
+            height: 140px;
+            margin: 0 10px;
+        }
+        .card-clickable {
+            cursor: pointer;
+        }
+        #message {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .title {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            color: white;
+        }
+        .blinking-text {
+            text-align: center;
+            font-size: 24px;
+            color: yellow;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <h1 class="title">Making 10</h1>
+        <button id="start-new-game">Start New Game</button> 
+        <div class="title">Computer Player</div>
+        <div id="computer-hand" class="player-hand"></div>
+        <div class="title">You</div>
+        <div id="human-hand" class="player-hand"></div>
+        <!-- <button id="keep-cards">Keep All Cards</button> -->
+        <div id="message" class="blinking-text"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+

@@ -10,10 +10,10 @@ body {
 
 #game-container {
     text-align: center;
-    background-color: white;
+    /* background-color: white; */
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    /* box-shadow: 0 0 10px rgba(0,0,0,0.1); */
     max-width: 600px;
     width: 100%;
 }
@@ -28,6 +28,13 @@ button {
 #message {
     margin-top: 20px;
     font-weight: bold;
+    color: white;
+}
+
+#current-card {
+    margin-top: 20px;
+    font-weight: bold;
+    color: white;
 }
 
 #guessed-cards {
@@ -45,17 +52,15 @@ button {
     border-radius: 5px;
 }
 
-@keyframes flash-yellow {
-    0%, 50%, 100% {
-        background-color: transparent;
-    }
-    25%, 75% {
-        background-color: yellow;
-    }
+.blinking-text {
+    text-align: center;
+    font-size: 24px;
+    animation: blink 1s infinite;
 }
 
-.game-over-flash {
-    animation: flash-yellow 1s linear infinite;
-    padding: 10px;
-    border-radius: 5px;
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
 }
+

@@ -93,9 +93,11 @@ function updateMessage(message, isGameOver = false) {
     messageElement.textContent = message;
 
     if (isGameOver) {
-        messageElement.classList.add('game-over-flash');
+        messageElement.classList.add('blinking-text');
+        messageElement.style.color = "yellow"
     } else {
-        messageElement.classList.remove('game-over-flash');
+        messageElement.classList.remove('blinking-text');
+        messageElement.style.color = "white"
     }
 }
 
@@ -124,4 +126,6 @@ document.getElementById('low-btn').addEventListener('click', () => playRound('lo
 startButton.addEventListener('click',()=>{
   startGame()
 })
+
+startGame()
 

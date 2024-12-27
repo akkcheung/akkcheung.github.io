@@ -186,3 +186,5 @@ startButton.addEventListener('click',()=>{
 })
 
 createDeck()
+createBoard()
+startTimer()
