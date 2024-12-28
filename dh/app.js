@@ -2,8 +2,14 @@ const audio = document.getElementById('audio');
 const lyricsContainer = document.getElementById('lyrics');
 const menu = document.getElementById('menu');
 
+const btnPlayNext = document.getElementById('playNext');
+const btnPlayStop = document.getElementById('playStop');
+
 let lyrics=[]
 let currentLine = 0;
+
+let songs = []
+let songsPlaying = []
 
 // Functions
 
@@ -69,6 +75,9 @@ function getMenu(){
 
        let songList = ""
 
+       songs = [...data.songs]
+       songsPlaying = shuffle(songs) 
+
        data.songs.forEach( song => {
          if (String(song.id)[3] === "1"){
            if (String(song.id)[0] === "1")
@@ -86,6 +95,7 @@ function getMenu(){
             <a href="#" value="${song.id}">${song.name}</a>
          </li>
          `
+          
        })
        
        console.log(songList)
@@ -93,9 +103,56 @@ function getMenu(){
        
        menu.innerHTML = songList
 
-
     })
 }
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function playNext(){
+
+  console.log(`playNext invoked`)
+
+  // songsPlaying = shuffle(songs)
+  console.log('songsPlaying:', songsPlaying)
+
+  // const song = songs.pop()
+  const song = songsPlaying.pop()
+
+  const links = document.getElementsByTagName('a')
+
+  for (let link of links){
+    if (link.getAttribute('value') == song.id){
+      console.log(`playing: ${songs.id}`)
+      link.click()
+    }
+  }
+
+  if (btnPlayNext.disabled == false)
+    btnPlayNext.disabled = true   
+}
+
+function playStop(){
+  clearInterval(checkInterval)
+  btnPlayNext.disabled = false   
+}
+
+const checkInterval = setInterval(() => {
+  console.log(`checkInterval invoked`)
+  if (audio.ended){
+     playNext()
+  }
+  if (songs.length == 0){
+    clearInterval(checkInterval)
+    playNext.disabled = false   
+  }
+}, 5000);
+
 
 // EventListeners
 
@@ -131,3 +188,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 })
+
