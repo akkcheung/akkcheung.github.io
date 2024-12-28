@@ -54,9 +54,6 @@ function createBoard() {
   console.log(cardValuesTmp)
   
   // Duplicate and shuffle the cards
-  // cards = [...cardValues, ...cardValues];
-  // shuffle(cards);
-  
   cards = [...cardValuesTmp, ...cardValuesTmp]
   cards = shuffle(cards)
 
@@ -67,12 +64,8 @@ function createBoard() {
   flippedCards = [];
   matchedPairs = 0;
   
-// cardImage.src = `https://deckofcardsapi.com/static/img/${card.value == '10'     ? card.value[1].toUpperCase() : card.value[0].toUpperCase()}${card.suit[0].toUppe    rCase()}.png`;
-
   // Create card elements
-  // cards.forEach( value  => {
   cards.forEach( card  => {
-    // const card = document.createElement("div");
     const cardDiv = document.createElement("div");
 
     // card.classList.add("card");
@@ -84,7 +77,7 @@ function createBoard() {
     const cardImage = document.createElement('img');
 
 
-    cardImage.src = `https://deckofcardsapi.com/static/img/back.png`;
+    cardImage.src = `http://deckofcardsapi.com/static/img/back.png`;
     cardDiv.appendChild(cardImage);
 
     // card.addEventListener("click", flipCard);
@@ -111,7 +104,7 @@ function flipCard() {
   // card.textContent = card.dataset.value;
 
   let img = card.firstChild
-  img.src = `https://deckofcardsapi.com/static/img/${card.dataset.value}.png`;
+  img.src = `http://deckofcardsapi.com/static/img/${card.dataset.value}.png`;
 
   flippedCards.push(card);
 
@@ -138,7 +131,7 @@ function checkMatch() {
     // Check for win condition
     if (matchedPairs === cards.length / 2) {
       clearInterval(timerInterval); // Stop the timer
-      message.textContent = "🎉 You Win! All pairs matched!";
+      message.textContent = "You Win! All pairs matched!";
     }
 
     // flippedCards = [];
@@ -150,7 +143,7 @@ function checkMatch() {
         card.classList.remove("flipped");
         
         let img = card.firstChild
-        img.src = `https://deckofcardsapi.com/static/img/back.png`;
+        img.src = `http://deckofcardsapi.com/static/img/back.png`;
 
         // card.textContent = "";
       });
