@@ -3,6 +3,7 @@ const gameBoard = document.getElementById("gameBoard");
 const message = document.getElementById("message");
 const timerDisplay = document.getElementById("timer");
 const startButton = document.getElementById("startButton");
+const hintButton = document.getElementById("hintButton");
 
 let cards = [];
 let flippedCards = [];
@@ -38,7 +39,7 @@ function shuffle(array) {
 // Function to create the game board
 function createBoard() {
 
-  const cardValues = ["A", "B", "C", "D", "E", "F", "G", "H"];
+  // const cardValues = ["A", "B", "C", "D", "E", "F", "G", "H"];
 
   let cardValuesTmp = []
  
@@ -46,9 +47,21 @@ function createBoard() {
   console.log(shuffle(deck))
 
   for (let i=0; i < 8; i++){
+  // for (let i=0; i < deck.length; i++){
 
     console.log(deck[i])
-    cardValuesTmp.push(deck[i]);
+
+//   if (cardValuesTmp.length > 8)
+//    break
+
+//    if (!(
+//        cardValuesTmp.includes( {suit:'spades',  value:deck[i].value} ) || 
+//        cardValuesTmp.includes( {suit:'hearts',  value:deck[i].value} ) || 
+//         cardValuesTmp.includes( {suit:'clubs',   value:deck[i].value} ) ||
+//         cardValuesTmp.includes( {suit:'diamonds', value:deck[i].value} )
+//     ))
+        cardValuesTmp.push(deck[i]);
+
   }
 
   console.log(cardValuesTmp)
@@ -176,6 +189,31 @@ function startTimer() {
 startButton.addEventListener('click',()=>{
   createBoard()
   startTimer()
+})
+
+hintButton.addEventListener('click',()=>{
+    // console.log('hint!')
+
+    let childDivs = document.getElementsByClassName("card")
+
+   
+    for ( i=0 ; i < childDivs.length; i++){
+        let childDiv = childDivs[i]
+        let img = childDiv.firstChild
+
+        img.src = `http://deckofcardsapi.com/static/img/${childDiv.dataset.value}.png`;
+        console.log(childDiv.dataset.value)
+        console.log(img.src)
+    }
+
+    setTimeout(() => {
+        for ( i=0 ; i < childDivs.length; i++){
+            let childDiv = childDivs[i]
+            let img = childDiv.firstChild
+
+            img.src = `http://deckofcardsapi.com/static/img/back.png`;
+        }
+    }, 3000);
 })
 
 createDeck()
