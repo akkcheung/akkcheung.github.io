@@ -143,7 +143,19 @@ class GameScene extends Phaser.Scene {
         } else if (card.suit === this.currentSuit || card.rank === this.currentRank) {
             this.moveCardToDiscardPile(card);
             cardObject.destroy();
-            this.endTurn();
+
+            if (this.playerHand.length === 0) {
+                this.statusText.setText('You win!');
+                this.showRestartButton();
+                return;
+            }
+
+            if (card.rank === 'Q') {
+                this.statusText.setText('Opponent skips a turn. Your turn again.');
+                // Turn remains 'player'
+            } else {
+                this.endTurn();
+            }
         } else {
             this.statusText.setText('Invalid move. Try again.');
         }
@@ -157,11 +169,12 @@ class GameScene extends Phaser.Scene {
 
     promptForSuitChoice() {
         this.statusText.setText('Choose a suit');
-        const suitOptions = ['H', 'D', 'C', 'S'];
+        // const suitOptions = ['H', 'D', 'C', 'S'];
+        const suitOptions = ['S', 'H', 'C', 'D'];
         const suitTexts = [];
 
         suitOptions.forEach((suit, index) => {
-            let suitText = this.add.text(350 + (index * 50), 400, suit, { fontSize: '32px', fill: '#fff', backgroundColor: '#555', padding: {x: 10, y: 5 } })
+            let suitText = this.add.text(350 + (index * 50), 300, suit, { fontSize: '32px', fill: '#fff', backgroundColor: '#555', padding: {x: 10, y: 5 } })
                 .setInteractive();
             
             suitText.on('pointerdown', () => {
@@ -238,6 +251,14 @@ class GameScene extends Phaser.Scene {
             this.discardPile.push(card);
             this.currentSuit = card.suit;
             this.currentRank = card.rank;
+
+            if (this.opponentHand.length === 0) {
+                this.rerender();
+                this.statusText.setText('Opponent wins!');
+                this.showRestartButton();
+                return;
+            }
+
             if (card.rank === '8') {
                 // AI chooses the most common suit in its hand
                 const suitCounts = { H: 0, D: 0, C: 0, S: 0 };
@@ -250,6 +271,14 @@ class GameScene extends Phaser.Scene {
                 }
                 this.currentSuit = maxSuit;
             }
+
+            if (card.rank === 'Q') {
+                this.statusText.setText('You skip a turn. Opponent plays again.');
+                this.rerender();
+                setTimeout(() => this.opponentTurn(), 1000);
+                return;
+            }
+
         } else if (this.drawPile.length > 0) {
             this.opponentHand.push(this.drawPile.pop());
         }
@@ -292,7 +321,8 @@ const config = {
     type: Phaser.AUTO,
     width: 800,
     height: 600,
-    scene: [GameScene]
+    scene: [GameScene],
+    backgroundColor: '#004d00'
 };
 
 const game = new Phaser.Game(config);
