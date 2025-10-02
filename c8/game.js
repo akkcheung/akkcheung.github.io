@@ -30,6 +30,8 @@ class GameScene extends Phaser.Scene {
 
         this.drawPile = this.deck;
 
+        this.drawTwoStack = 0;
+
         this.renderPlayerHand();
         this.renderOpponentHand();
         this.renderDiscardPile();
@@ -127,7 +129,11 @@ class GameScene extends Phaser.Scene {
                 .setScale(0.8)
                 .setInteractive();
             
-            this.add.text(160, 350, `Draw (${this.drawPile.length})`, { fontSize: '16px', fill: '#fff' });
+            if (this.drawTwoStack > 0) {
+                this.add.text(160, 350, `Draw ${this.drawTwoStack} cards`, { fontSize: '16px', fill: '#ff0' });
+            } else {
+                this.add.text(160, 350, `Draw (${this.drawPile.length})`, { fontSize: '16px', fill: '#fff' });
+            }
 
             drawPileObject.on('pointerdown', () => {
                 this.drawCard();
@@ -138,6 +144,21 @@ class GameScene extends Phaser.Scene {
     playCard(card, cardObject) {
         if (this.turn !== 'player') return;
 
+        // Handle "draw two" stack
+        if (this.drawTwoStack > 0) {
+            if (card.rank === '2') {
+                this.drawTwoStack += 2;
+                this.moveCardToDiscardPile(card);
+                cardObject.destroy();
+                this.statusText.setText(`Stack is now ${this.drawTwoStack}.`);
+                this.endTurn();
+            } else {
+                this.statusText.setText(`You must play a '2' or draw ${this.drawTwoStack} cards.`);
+            }
+            return; // Must exit after handling stack
+        }
+
+        // Normal play logic
         if (card.rank === '8') {
             this.handleCrazyEight(card, cardObject);
         } else if (card.suit === this.currentSuit || card.rank === this.currentRank) {
@@ -152,7 +173,10 @@ class GameScene extends Phaser.Scene {
 
             if (card.rank === 'Q') {
                 this.statusText.setText('Opponent skips a turn. Your turn again.');
-                // Turn remains 'player'
+            } else if (card.rank === '2') {
+                this.drawTwoStack = 2;
+                this.statusText.setText('Opponent must play a \'2\' or draw 2.');
+                this.endTurn();
             } else {
                 this.endTurn();
             }
@@ -198,6 +222,24 @@ class GameScene extends Phaser.Scene {
     drawCard() {
         if (this.turn !== 'player') return;
 
+        if (this.drawTwoStack > 0) {
+            let numToDraw = this.drawTwoStack;
+            for (let i = 0; i < numToDraw; i++) {
+                if (this.drawPile.length > 0) {
+                    this.playerHand.push(this.drawPile.pop());
+                    if (this.drawPile.length === 0) {
+                        this.endGameOnEmptyDrawPile();
+                        return;
+                    }
+                }
+            }
+            this.statusText.setText(`You drew ${numToDraw} cards.`);
+            this.drawTwoStack = 0;
+            this.rerender(); // Show the player their new cards
+            this.endTurn(); // Pass turn to opponent
+            return;
+        }
+
         if (this.drawPile.length === 0) {
             let canPlay = this.playerHand.some(card => card.rank === '8' || card.suit === this.currentSuit || card.rank === this.currentRank);
             if (!canPlay) {
@@ -208,6 +250,11 @@ class GameScene extends Phaser.Scene {
         }
 
         this.playerHand.push(this.drawPile.pop());
+        if (this.drawPile.length === 0) {
+            this.endGameOnEmptyDrawPile();
+            return;
+        }
+
         this.rerender();
         this.endTurn();
     }
@@ -235,15 +282,36 @@ class GameScene extends Phaser.Scene {
     }
 
     opponentTurn() {
-        if (this.drawPile.length === 0) {
-            let canPlay = this.opponentHand.some(card => card.rank === '8' || card.suit === this.currentSuit || card.rank === this.currentRank);
-            if (!canPlay) {
-                this.statusText.setText('Draw!');
-                this.showRestartButton();
-                return;
+        // Handle "draw two" stack first
+        if (this.drawTwoStack > 0) {
+            let twoCardIndex = this.opponentHand.findIndex(card => card.rank === '2');
+            if (twoCardIndex !== -1) {
+                let card = this.opponentHand.splice(twoCardIndex, 1)[0];
+                this.discardPile.push(card);
+                this.currentSuit = card.suit;
+                this.currentRank = card.rank;
+                this.drawTwoStack += 2;
+                this.statusText.setText(`Opponent stacked a '2'. Stack is now ${this.drawTwoStack}. Your turn.`);
+            } else {
+                let numToDraw = this.drawTwoStack;
+                for (let i = 0; i < numToDraw; i++) {
+                    if (this.drawPile.length > 0) { 
+                        this.opponentHand.push(this.drawPile.pop());
+                        if (this.drawPile.length === 0) {
+                            this.endGameOnEmptyDrawPile();
+                            return;
+                        }
+                    }
+                }
+                this.drawTwoStack = 0;
+                this.statusText.setText(`Opponent drew ${numToDraw} cards. Your turn.`);
             }
+            this.rerender();
+            this.turn = 'player';
+            return;
         }
 
+        // Normal opponent turn
         let playableCardIndex = this.opponentHand.findIndex(card => card.rank === '8' || card.suit === this.currentSuit || card.rank === this.currentRank);
 
         if (playableCardIndex !== -1) {
@@ -265,9 +333,7 @@ class GameScene extends Phaser.Scene {
                 this.opponentHand.forEach(c => { suitCounts[c.suit]++; });
                 let maxSuit = 'H';
                 for (const suit in suitCounts) {
-                    if (suitCounts[suit] > suitCounts[maxSuit]) {
-                        maxSuit = suit;
-                    }
+                    if (suitCounts[suit] > suitCounts[maxSuit]) { maxSuit = suit; }
                 }
                 this.currentSuit = maxSuit;
             }
@@ -279,8 +345,16 @@ class GameScene extends Phaser.Scene {
                 return;
             }
 
+            if (card.rank === '2') {
+                this.drawTwoStack = 2;
+                this.statusText.setText('You must play a \'2\' or draw 2. Your turn.');
+            }
         } else if (this.drawPile.length > 0) {
             this.opponentHand.push(this.drawPile.pop());
+            if (this.drawPile.length === 0) {
+                this.endGameOnEmptyDrawPile();
+                return;
+            }
         }
 
         this.rerender();
@@ -292,7 +366,9 @@ class GameScene extends Phaser.Scene {
         }
 
         this.turn = 'player';
-        this.statusText.setText('Your turn.');
+        if(this.drawTwoStack === 0) { // Avoid overwriting the 'draw 2' message
+            this.statusText.setText('Your turn.');
+        }
     }
 
     rerender() {
@@ -314,6 +390,29 @@ class GameScene extends Phaser.Scene {
         restartButton.on('pointerdown', () => {
             this.scene.restart();
         });
+    }
+
+    endGameOnEmptyDrawPile() {
+        this.rerender(); // Show the final state
+        this.statusText.setText('Draw pile is empty!');
+
+        const playerScore = this.playerHand.length;
+        const opponentScore = this.opponentHand.length;
+
+        let winnerText = '';
+        if (playerScore < opponentScore) {
+            winnerText = 'You win by having fewer cards!';
+        } else if (opponentScore < playerScore) {
+            winnerText = 'Opponent wins by having fewer cards!';
+        } else {
+            winnerText = 'It\'s a draw!';
+        }
+
+        // Display winner text after a delay and show restart button
+        setTimeout(() => {
+            this.statusText.setText(winnerText);
+            this.showRestartButton();
+        }, 2000);
     }
 }
 
