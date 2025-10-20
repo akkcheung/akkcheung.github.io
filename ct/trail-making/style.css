@@ -1,0 +1,47 @@
+.game-container {
+    position: relative;
+    width: 800px;
+    height: 600px;
+    border: 1px solid #ccc;
+}
+
+#game-board {
+    width: 100%;
+    height: 100%;
+}
+
+.number-dot {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.number-dot.clicked {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+#next-number {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.countdown {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: blue;
+    font-size: 2rem;
+    font-weight: bold;
+    z-index: 10;
+}

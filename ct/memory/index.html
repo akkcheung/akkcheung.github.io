@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Game</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Memory Game</h1>
+        <div class="game-container">
+            <div class="game-info">
+                <p>Moves: <span id="moves">0</span></p>
+                <p>Time: <span id="timer">0</span>s</p>
+            </div>
+            <div id="game-board"></div>
+            <div id="auto-restart-container" style="display: none;">
+                <p>Game will restart in <span id="restart-timer">5</span> seconds...</p>
+            </div>
+        </div>
+        <a href="../index.html">Back to Menu</a>
+    </div>
+    <script type="module" src="../data.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>

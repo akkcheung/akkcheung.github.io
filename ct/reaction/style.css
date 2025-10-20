@@ -1,0 +1,19 @@
+.game-container {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+#target {
+    width: 100px;
+    height: 100px;
+    background-color: red;
+    border-radius: 50%;
+    cursor: pointer;
+    margin: 2rem auto;
+    display: none;
+}
+
+#target.active {
+    display: block;
+    background-color: green;
+}

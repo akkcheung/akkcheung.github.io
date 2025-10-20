@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Charts</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="charts.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Progress Charts</h1>
+        <div id="radar-chart-container" class="chart-container">
+            <div class="chart-controls">
+                <button id="daily-btn">Daily</button>
+                <button id="weekly-btn">Weekly</button>
+            </div>
+            <div id="radar-chart"></div>
+        </div>
+        <a href="index.html">Back to Menu</a>
+    </div>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
+    <script type="module" src="data.js"></script>
+    <script type="module" src="charts.js"></script>
+</body>
+</html>
