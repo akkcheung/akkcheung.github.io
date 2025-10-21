@@ -16,7 +16,7 @@ const transformations = [
 ];
 
 let score = 0;
-let timeLeft = 60;
+let timeLeft = 30;
 let gameTimer;
 let correctGrid;
 let gameInProgress = false;
@@ -47,7 +47,7 @@ function endGame() {
     gameInProgress = false;
     grid1.removeEventListener('click', checkAnswer);
     grid2.removeEventListener('click', checkAnswer);
-    saveGameResult('mirror-game', score, 60);
+    saveGameResult('mirror-game', score, 30);
     startRestartCountdown();
 }
 
