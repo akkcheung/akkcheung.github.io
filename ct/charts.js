@@ -34,13 +34,15 @@ function createRadarChart(userData, period) {
     const seriesData = {};
 
     dates.forEach(date => {
-        const d = new Date(date);
+        const [year, month, day] = date.split('-').map(Number);
+        const d = new Date(Date.UTC(year, month - 1, day));
+        
         let key;
         if (period === 'daily') {
-            key = d.toLocaleDateString('en-US', { timeZone: 'America/Toronto', year: 'numeric', month: 'short', day: 'numeric', timeZoneName: 'short' });
+            key = `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}-${String(d.getUTCDate()).padStart(2, '0')}`;
         } else { // weekly
-            const weekStart = new Date(d.setDate(d.getDate() - d.getDay()));
-            key = weekStart.toLocaleDateString('en-US', { timeZone: 'America/Toronto', year: 'numeric', month: 'short', day: 'numeric', timeZoneName: 'short' });
+            const weekStart = new Date(d.setDate(d.getUTCDate() - d.getUTCDay()));
+            key = `${weekStart.getUTCFullYear()}-${String(weekStart.getUTCMonth() + 1).padStart(2, '0')}-${String(weekStart.getUTCDate()).padStart(2, '0')}`;
         }
 
         if (!seriesData[key]) {
