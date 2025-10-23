@@ -16,7 +16,7 @@ const transformations = [
 ];
 
 let score = 0;
-let timeLeft = 30;
+let timeLeft = 60;
 let gameTimer;
 let correctGrid;
 let gameInProgress = false;
@@ -47,7 +47,7 @@ function endGame() {
     gameInProgress = false;
     grid1.removeEventListener('click', checkAnswer);
     grid2.removeEventListener('click', checkAnswer);
-    saveGameResult('mirror-game', score, 30);
+    saveGameResult('mirror-game', score, 60);
     startRestartCountdown();
 }
 
@@ -69,7 +69,12 @@ function nextRound() {
     const randomLetter = letters[Math.floor(Math.random() * letters.length)];
     letterDisplay.textContent = randomLetter;
 
-    const randomTransformation = transformations[Math.floor(Math.random() * transformations.length)];
+    let possibleTransformations = [...transformations];
+    if (['S', 'Z', 'N'].includes(randomLetter)) {
+        possibleTransformations = possibleTransformations.filter(t => t !== 'rotate(180deg)');
+    }
+
+    const randomTransformation = possibleTransformations[Math.floor(Math.random() * possibleTransformations.length)];
 
     if (Math.random() > 0.5) {
         correctGrid = grid1;
@@ -92,10 +97,22 @@ function checkAnswer(event) {
     if (event.target === correctGrid) {
         score++;
         scoreSpan.textContent = score;
+        event.target.innerHTML = '&#10004;'; // Green tick
+        event.target.style.color = 'green';
+        setTimeout(() => {
+            event.target.innerHTML = '';
+            event.target.style.color = 'black';
+            nextRound();
+        }, 500);
     } else {
-        // Optional: provide feedback for wrong answer
+        event.target.innerHTML = '&#10008;'; // Red cross
+        event.target.style.color = 'red';
+        setTimeout(() => {
+            event.target.innerHTML = '';
+            event.target.style.color = 'black';
+            nextRound();
+        }, 500);
     }
-    nextRound();
 }
 
 startGame();

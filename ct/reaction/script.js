@@ -26,9 +26,13 @@ function initGame() {
     reactionTimeSpan.textContent = '...';
     target.classList.remove('active');
 
+    const colors = ['red', 'green', 'orange', 'yellow', 'blue', 'violet'];
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
     const randomDelay = Math.random() * 3000 + 1000; // 1-4 seconds
 
     timeoutId = setTimeout(() => {
+        target.style.backgroundColor = randomColor;
         target.classList.add('active');
         startTime = new Date().getTime();
     }, randomDelay);

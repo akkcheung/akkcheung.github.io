@@ -1,9 +1,6 @@
 import { getCurrentUser } from './data.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const dailyBtn = document.getElementById('daily-btn');
-    const weeklyBtn = document.getElementById('weekly-btn');
-
     const userName = getCurrentUser();
     if (!userName) {
         alert('Please select a user first.');
@@ -13,23 +10,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const results = JSON.parse(localStorage.getItem('cognitive-training-results')) || {};
     const userData = results[userName] || {};
 
+    const chartsMainContainer = document.getElementById('charts-main-container');
+
+    const controls = document.createElement('div');
+    controls.classList.add('chart-controls');
+
+    const dailyBtn = document.createElement('button');
+    dailyBtn.id = 'daily-btn';
+    dailyBtn.textContent = 'Daily';
     dailyBtn.classList.add('active');
-    createRadarChart(userData, 'daily');
+
+    const weeklyBtn = document.createElement('button');
+    weeklyBtn.id = 'weekly-btn';
+    weeklyBtn.textContent = 'Weekly';
+
+    controls.appendChild(dailyBtn);
+    controls.appendChild(weeklyBtn);
+    chartsMainContainer.insertBefore(controls, chartsMainContainer.firstChild);
+
+    createRadarCharts(userData, 'daily');
 
     dailyBtn.addEventListener('click', () => {
         dailyBtn.classList.add('active');
         weeklyBtn.classList.remove('active');
-        createRadarChart(userData, 'daily');
+        createRadarCharts(userData, 'daily');
     });
 
     weeklyBtn.addEventListener('click', () => {
         weeklyBtn.classList.add('active');
         dailyBtn.classList.remove('active');
-        createRadarChart(userData, 'weekly');
+        createRadarCharts(userData, 'weekly');
     });
 });
 
-function createRadarChart(userData, period) {
+function createRadarCharts(userData, period) {
+    const radarChartsContainer = document.getElementById('radar-charts-container');
+    radarChartsContainer.innerHTML = '';
+
     const dates = Object.keys(userData).sort((a, b) => new Date(a) - new Date(b));
     const seriesData = {};
 
@@ -72,7 +89,14 @@ function createRadarChart(userData, period) {
         }
     });
 
-    const series = Object.keys(seriesData).slice(-5).map(key => {
+    const last5Keys = Object.keys(seriesData).slice(-5);
+
+    last5Keys.forEach((key, index) => {
+        const chartContainer = document.createElement('div');
+        chartContainer.id = `radar-chart-${index}`;
+        chartContainer.classList.add('chart-container');
+        radarChartsContainer.appendChild(chartContainer);
+
         const avgMemory = seriesData[key].memory.length > 0 ? seriesData[key].memory.reduce((a, b) => a + b, 0) / seriesData[key].memory.length : null;
         const avgReaction = seriesData[key].reaction.length > 0 ? seriesData[key].reaction.reduce((a, b) => a + b, 0) / seriesData[key].reaction.length : null;
         const avgStroop = seriesData[key].stroop.length > 0 ? seriesData[key].stroop.reduce((a, b) => a + b, 0) / seriesData[key].stroop.length : null;
@@ -83,40 +107,38 @@ function createRadarChart(userData, period) {
             memory: avgMemory !== null ? Math.max(0, 100 - (avgMemory / 50 * 100)) : 0,
             reaction: avgReaction !== null ? Math.max(0, 100 - ((Math.max(0, avgReaction - 150)) / (1000 - 150) * 100)) : 0,
             stroop: avgStroop !== null ? (avgStroop / 30 * 100) : 0,
-            trailMaking: avgTrailMaking !== null ? Math.max(0, 100 - (avgTrailMaking / 60 * 100)) : 0, // Assuming 60 seconds is a bad time
-            mirrorGame: avgMirrorGame !== null ? (avgMirrorGame / 30 * 100) : 0 // Assuming 30 is a good score
+            trailMaking: avgTrailMaking !== null ? Math.max(0, 100 - (avgTrailMaking / 60 * 100)) : 0,
+            mirrorGame: avgMirrorGame !== null ? (avgMirrorGame / 30 * 100) : 0
         };
 
-        return {
-            name: key,
-            data: [normalizedScores.memory, normalizedScores.reaction, normalizedScores.stroop, normalizedScores.trailMaking, normalizedScores.mirrorGame],
-            pointPlacement: 'on'
-        };
-    });
-
-    Highcharts.chart('radar-chart', {
-        chart: {
-            polar: true,
-            type: 'line'
-        },
-        title: {
-            text: 'Overall Performance'
-        },
-        xAxis: {
-            categories: ['Memory', 'Reaction', 'Stroop', 'Trail Making', 'Mirror Game'],
-            tickmarkPlacement: 'on',
-            lineWidth: 0
-        },
-        yAxis: {
-            gridLineInterpolation: 'polygon',
-            lineWidth: 0,
-            min: 0,
-            max: 100,
-            labels: {
-                format: '{value}%'
-            }
-        },
-        series: series
+        Highcharts.chart(chartContainer.id, {
+            chart: {
+                polar: true,
+                type: 'line'
+            },
+            title: {
+                text: key
+            },
+            xAxis: {
+                categories: ['Memory', 'Reaction', 'Stroop', 'Trail Making', 'Mirror Game'],
+                tickmarkPlacement: 'on',
+                lineWidth: 0
+            },
+            yAxis: {
+                gridLineInterpolation: 'polygon',
+                lineWidth: 0,
+                min: 0,
+                max: 100,
+                labels: {
+                    format: '{value}%'
+                }
+            },
+            series: [{
+                name: 'Performance',
+                data: [normalizedScores.memory, normalizedScores.reaction, normalizedScores.stroop, normalizedScores.trailMaking, normalizedScores.mirrorGame],
+                pointPlacement: 'on'
+            }]
+        });
     });
 }
 
