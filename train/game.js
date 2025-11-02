@@ -1,4 +1,3 @@
-
 const config = {
     type: Phaser.AUTO,
     backgroundColor: 0xA0522D,
@@ -16,6 +15,7 @@ const game = new Phaser.Game(config);
 let train;
 let cargo1;
 let cargo2;
+let chainGraphics;
 let path;
 let follower;
 let trainTween;
@@ -69,11 +69,6 @@ function create ()
 
     const startText = this.add.text(300, 280, 'Click to Start', { fontSize: '32px', fill: '#fff' });
 
-    this.input.once('pointerdown', () => {
-        trainSound.play();
-        startText.destroy();
-    });
-
     // Draw trees with random positions that don't overlap
     const treePositions = [];
     const minDistance = 50;
@@ -118,6 +113,8 @@ function create ()
         }
     }
 
+    chainGraphics = this.add.graphics();
+
     // Create the train and cargo
     train = this.add.rectangle(0, 0, 30, 15, 0xff0000);
     cargo1 = this.add.rectangle(0, 0, 25, 15, 0x00ff00);
@@ -144,13 +141,19 @@ function create ()
 
     // Follower for the train
     follower = { t: 0, vec: new Phaser.Math.Vector2() };
-    trainTween = this.tweens.add({
-        targets: follower,
-        t: 1,
-        ease: 'Linear',
-        duration: 10000,
-        repeat: -1,
-        yoyo: false
+
+    this.input.once('pointerdown', () => {
+        trainSound.play();
+        startText.destroy();
+        trainTween = this.tweens.add({
+            targets: follower,
+            t: 1,
+            ease: 'Linear',
+            duration: 10000,
+            repeat: -1,
+            yoyo: false
+        });
+        console.log('trainTween started');
     });
 }
 
@@ -168,42 +171,54 @@ function update ()
         trafficLight.fillCircle(15, 45, 10);
     }
 
-    // Stop train at red light
-    const stopZone = (follower.t > 0.98 || follower.t < 0.02);
-    if (trafficLightState === 'red' && stopZone) {
-        trainTween.pause();
-        if (trainSound) trainSound.pause();
-    } else {
-        trainTween.resume();
-        if (trainSound) trainSound.resume();
-    }
-
-    // Get the new position on the path
-    path.getPoint(follower.t, follower.vec);
-
-    // Update the train's position and rotation
-    train.setPosition(follower.vec.x, follower.vec.y);
-    const tangent = path.getTangent(follower.t);
-    train.setRotation(tangent.angle());
-
-    // Add the current position to the history only when the train is moving
-    if (trainTween.isPlaying()) {
-        history.push({ x: follower.vec.x, y: follower.vec.y, angle: tangent.angle() });
-        if (history.length > historySize) {
-            history.shift();
+    if (trainTween) {
+        // Stop train at red light
+        const stopZone = (follower.t > 0.98 || follower.t < 0.02);
+        if (trafficLightState === 'red' && stopZone) {
+            trainTween.pause();
+            if (trainSound) trainSound.pause();
+        } else {
+            trainTween.resume();
+            if (trainSound) trainSound.resume();
         }
-    }
 
-    // Update cargo positions
-    if (history.length > 30) {
-        const pos1 = history[history.length - 30];
-        cargo1.setPosition(pos1.x, pos1.y);
-        cargo1.setRotation(pos1.angle);
-    }
+        // Get the new position on the path
+        path.getPoint(follower.t, follower.vec);
 
-    if (history.length > 60) {
-        const pos2 = history[history.length - 60];
-        cargo2.setPosition(pos2.x, pos2.y);
-        cargo2.setRotation(pos2.angle);
+        // Update the train's position and rotation
+        train.setPosition(follower.vec.x, follower.vec.y);
+        const tangent = path.getTangent(follower.t);
+        train.setRotation(tangent.angle());
+
+        // Add the current position to the history only when the train is moving
+        if (trainTween.isPlaying()) {
+            history.push({ x: follower.vec.x, y: follower.vec.y, angle: tangent.angle() });
+            if (history.length > historySize) {
+                history.shift();
+            }
+        }
+
+        // Update cargo positions
+        if (history.length > 30) {
+            const pos1 = history[history.length - 30];
+            cargo1.setPosition(pos1.x, pos1.y);
+            cargo1.setRotation(pos1.angle);
+        }
+
+        if (history.length > 60) {
+            const pos2 = history[history.length - 60];
+            cargo2.setPosition(pos2.x, pos2.y);
+            cargo2.setRotation(pos2.angle);
+        }
+
+        // Draw the chains
+        chainGraphics.clear();
+        chainGraphics.lineStyle(2, 0xFFA500, 1);
+        if (history.length > 30) {
+            chainGraphics.lineBetween(train.x, train.y, cargo1.x, cargo1.y);
+        }
+        if (history.length > 60) {
+            chainGraphics.lineBetween(cargo1.x, cargo1.y, cargo2.x, cargo2.y);
+        }
     }
 }
