@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Epub.js Reader</title>
+
+    <script>
+      // Prevents JSZip from thinking it is in a Node.js environment
+      window.module = undefined;
+      window.exports = undefined;
+    </script>
+
+    <script src="./jszip.min.js"></script>
+    <script src="./epub.min.js"></script>
+
+    <script>
+      // Verification: If these don't error, you're good to go!
+      console.log("JSZip loaded:", typeof JSZip !== 'undefined');
+      console.log("EpubJS loaded:", typeof ePub !== 'undefined');
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" >
+
+    <style type="text/css">
+    body {
+      display: flex;
+      flex-wrap: wrap;
+      -webkit-align-items: center; 
+      -webkit-justify-content: center; 
+    }
+
+    #viewer {
+      width: 290px;
+      height: 580px;
+      box-shadow: 0 0 4px #ccc;
+      padding: 10px 10px 0px 10px;
+      margin: 5px auto;
+      background: white;
+    }
+
+    #prev {
+      left: 0;
+    }
+
+    #next {
+      right: 0;
+    }
+
+    .break {
+      flex-basis: 100%;
+      height: 0; /* Optional: keeps the break invisible if it's an empty div */
+    }
+
+  </style>
+</head>
+<body>
+  <div id="open-modal">TOC</div>
+  <div class="break"></div>
+  <div id="prev"><h1>‹</h1></div>
+  <div id="viewer"></div>
+  <div id="next"><h1>›</h1></div>
+  <dialog id="toc">
+    <article id="toc-container"></article>
+  </dialog>
+  <script src="index.js"></script>
+</body>
+</html>
