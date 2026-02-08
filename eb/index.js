@@ -23,10 +23,15 @@ const $toc = document.getElementById("toc-container");
 
 book.loaded.navigation.then(function(nav) {
     const docfrag = document.createDocumentFragment();
+    const header = document.createElement("header");
+
+    header.textContent = "太白金星有點煩 - 馬伯庸";
+    docfrag.append(header)
 
     nav.toc.forEach(function(chapter) {
         const item = document.createElement("li");
         const link = document.createElement("a");
+
 
         link.textContent = chapter.label;
         link.href = chapter.href;
