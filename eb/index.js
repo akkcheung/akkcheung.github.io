@@ -13,6 +13,7 @@ rendition.themes.fontSize("120%");
 const displayed=rendition.display();
 
 let headerText="太白金星有點煩"
+let bookname="book.epub"
 
 let bookmarks = []
 
@@ -56,10 +57,12 @@ console.log('picker', picker)
 picker.addEventListener('change', (event) => {
   const choice = event.target.value;
   headerText = event.target.options[event.target.selectedIndex].text
+  bookname = event.target.value
 
   if (choice !== ""){
     console.log('choice', choice)
     console.log('headerText', headerText)
+    console.log('bookname', bookname)
     
     if (rendition){
       rendition.destroy()
@@ -75,8 +78,9 @@ picker.addEventListener('change', (event) => {
     });
 
     rendition.themes.fontSize("120%");
-    rendition.display();
 
+    // rendition.display();
+    loadBookmark(bookname)
 
     book.loaded.navigation.then(function(nav) {
       renderToc(nav.toc)
@@ -116,20 +120,40 @@ function renderToc(toc){
     $toc.appendChild(docfrag);
 }
 
-function saveBookmark(bookId){
-  const bookmarks = JSON.parse(localStorage.getItem('epub_bookmarks')) || []
+const saveBookmark = (bookId) => {
+  const bookmarks = JSON.parse(localStorage.getItem('epub_bookmarks')) || {}
 
   const currentCfi = rendition.currentLocation().start.cfi
+
   bookmarks[bookId] = currentCfi
 
   localStorage.setItem("epub_bookmarks", JSON.stringify(bookmarks))
-  console.log(`Bookmark set for: ${bookId}`)
-
+  console.log(`Bookmark set for: ${bookId}, ${currentCfi}`)
+ 
 };
 
+
+const loadBookmark = (bookId) => {
+  const bookmarks = JSON.parse(localStorage.getItem('epub_bookmarks')) || []
+
+  if (bookmarks && bookmarks[bookId]){
+    const savedCfi = bookmarks[bookId]
+    rendition.display(savedCfi)
+  } else {
+    console.log("No bookmark found!")
+    rendition.display()
+  }
+};
 
 
 
 rendition.on("relocated", function(location){
   console.log("Current CFI:", location.start.cfi)
 })
+
+const saveBookmarkDiv = document.getElementById('save-bookmark')
+
+saveBookmarkDiv.addEventListener('click', () => {
+  console.log("saveBookmark", saveBookmarkDiv)
+  saveBookmark(bookname)
+});
