@@ -129,6 +129,8 @@ const saveBookmark = (bookId) => {
 
   localStorage.setItem("epub_bookmarks", JSON.stringify(bookmarks))
   console.log(`Bookmark set for: ${bookId}, ${currentCfi}`)
+  
+  alert("Bookmark saved!")
  
 };
 
