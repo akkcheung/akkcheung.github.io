@@ -9,9 +9,13 @@ let rendition = book.renderTo("viewer", {
   height: "100%",
 });
 
+rendition.themes.fontSize("120%");
 const displayed=rendition.display();
 
 let headerText="太白金星有點煩"
+
+let bookmarks = []
+
 
 var next = document.getElementById("next");
 next.addEventListener("click", function(){
@@ -70,7 +74,9 @@ picker.addEventListener('change', (event) => {
       height: "100%",
     });
 
+    rendition.themes.fontSize("120%");
     rendition.display();
+
 
     book.loaded.navigation.then(function(nav) {
       renderToc(nav.toc)
@@ -109,3 +115,21 @@ function renderToc(toc){
 
     $toc.appendChild(docfrag);
 }
+
+function saveBookmark(bookId){
+  const bookmarks = JSON.parse(localStorage.getItem('epub_bookmarks')) || []
+
+  const currentCfi = rendition.currentLocation().start.cfi
+  bookmarks[bookId] = currentCfi
+
+  localStorage.setItem("epub_bookmarks", JSON.stringify(bookmarks))
+  console.log(`Bookmark set for: ${bookId}`)
+
+};
+
+
+
+
+rendition.on("relocated", function(location){
+  console.log("Current CFI:", location.start.cfi)
+})
