@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Epub.js Reader</title>
+
+    <script>
+      // Prevents JSZip from thinking it is in a Node.js environment
+      window.module = undefined;
+      window.exports = undefined;
+    </script>
+
+    <script src="./jszip.min.js"></script>
+    <script src="./epub.min.js"></script>
+
+    <script>
+      // Verification: If these don't error, you're good to go!
+      console.log("JSZip loaded:", typeof JSZip !== 'undefined');
+      console.log("EpubJS loaded:", typeof ePub !== 'undefined');
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" >
+
+    <style type="text/css">
+    body {
+      display: flex; 
+      flex-wrap: wrap; 
+      -webkit-align-items: center; 
+      -webkit-justify-content: center; 
+    }
+
+    #viewer {
+      width: 400px; 
+      height: 740px; 
+      box-shadow: 0 0 4px #ccc;
+      padding: 10px 10px 0px 10px;
+      margin: 5px auto;
+      background: white;
+    }
+
+    #prev {
+      left: 0;
+    }
+
+    #next {
+      right: 0;
+    }
+
+    .break {
+      flex-basis: 100%;
+      height: 0; /* Optional: keeps the break invisible if it's an empty div */
+    }
+
+    dialog.lg article {
+      max-width: 300px;
+      max-height: 400px; 
+    }
+    
+
+  </style>
+</head>
+<body>
+  <div>
+    <select id="picker" name="select" aria-label="Select" required>
+      <option disabled value="">Select Book</option >
+      <option selected value="book.epub">The Lightening Thief</option>
+      <option value="Riordan_Rick_-_Percy_Jackson_and_the_Olympians_2_-_The_Sea_of_Monsters.epub">The Sea of Monsters</option>
+      <option value="Rick_Riordan_-_Percy_Jackson_and_the_Olympians_3_-_The_Titan_39_s_Curse.epub">The Titan's Curse</option>
+      <option value="Rick_Riordan_-_Percy_Jackson_and_the_Olympians_4_-_The_Battle_of_the_Laby.epub">The Battle of the Ladyrinth</option>
+      <option value="Riordan_Rick_-_Percy_Jackson_and_the_Olympians_5_-_The_Last_Olympian.epub">The Last Olympian</option>
+      <option value="Riordan_Rick_-_Percy_Jackson_and_the_Olympians_6_-_The_Chalis_of_the_Gods.epub">The Chalice of the Gods</option>
+      <option value="Riordan_Rick_-_Percy_Jackson_and_the_Olympians_7_-_Wrath_of_the_Triple_Goddess.epub">Wrath of the Triple Goddess</option>
+    </select>
+  </div>
+  <div class="break"></div>
+
+  <div id="open-modal" role="button" class="outline">TOC</div>
+  <div id="save-bookmark" role="button" class="outline">BMK</div>
+  <div class="break"></div>
+
+  <div id="prev"><h1>‹</h1></div>
+  <div id="viewer"></div>
+  <div id="next"><h1>›</h1></div>
+
+  <dialog id="toc" class="lg">
+    <article id="toc-container"></article>
+  </dialog>
+
+  <script src="index.js"></script>
+</body>
+</html>
