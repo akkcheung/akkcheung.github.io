@@ -5,9 +5,9 @@ let book = ePub("book.epub");
 
 
 let rendition = book.renderTo("viewer", {
-  manager: "continuous",
   flow: "paginated",
-  // width: "100%", 
+  manager: "default",
+  width: "440px", 
   // height: "100%", 
 })
 
@@ -73,10 +73,10 @@ picker.addEventListener('change', (event) => {
     book = ePub(choice);
 
     rendition = book.renderTo("viewer", {
-      manager: "continuous",
       flow: "paginated",
-      // width: "90%",
-      // height: "90%",
+      manager: "default",
+      width: "440px",
+      // height: "100%",
     });
 
     rendition.themes.fontSize("120%");
