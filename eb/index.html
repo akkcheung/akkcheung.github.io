@@ -24,27 +24,27 @@
 
     <style type="text/css">
     body {
-      display: flex; 
-      flex-wrap: wrap; 
-      -webkit-align-items: center; 
-      -webkit-justify-content: center; 
+      /* display: flex; */
+      /* flex-wrap: wrap; */
+      /* -webkit-align-items: center; */
+      /* -webkit-justify-content: center; */
     }
 
     #viewer {
-      width: 400px; 
-      height: 740px; 
-      box-shadow: 0 0 4px #ccc;
-      padding: 10px 10px 0px 10px;
-      margin: 5px auto;
-      background: white;
+      /* width: 400px; */
+      /* height: 740px; */
+      /* box-shadow: 0 0 4px #ccc; */
+      /* padding: 10px 10px 0px 10px; */
+      /* margin: 5px auto; */
+      /* background: white; */
     }
 
     #prev {
-      left: 0;
+      /* left: 0; */
     }
 
     #next {
-      right: 0;
+      /* right: 0; */
     }
 
     .break {
@@ -53,8 +53,8 @@
     }
 
     dialog.lg article {
-      max-width: 300px;
-      max-height: 400px; 
+      max-width: 350px;
+      max-height: 450px; 
     }
     
 
@@ -72,15 +72,22 @@
       <option value="1010490861.epub">標竿人生</option>
     </select>
   </div>
-  <div class="break"></div>
 
-  <div id="open-modal" role="button" class="outline">TOC</div>
-  <div id="save-bookmark" role="button" class="outline">BMK</div>
-  <div class="break"></div>
+  <table>
+    <tr>
+      <td><div id="open-modal" role="button" class="outline">TOC</div></td>
+      <td><div id="save-bookmark" role="button" class="outline">BMK</div></td>
+    </tr>
+  </table>
 
-  <div id="prev"><h1>‹</h1></div>
-  <div id="viewer"></div>
-  <div id="next"><h1>›</h1></div>
+  <table>
+    <tr>
+      <td><div id="prev" style="text-align: center;"><</div></td>
+      <td><div id="next" style="text-align: center;">></div></td>
+    <tr>
+  </table>
+
+  <div id="viewer" class="container"></div>
 
   <dialog id="toc" class="lg">
     <article id="toc-container"></article>

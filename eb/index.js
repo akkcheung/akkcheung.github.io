@@ -2,12 +2,14 @@
 let book = ePub("book.epub");
 // const book = ePub("CNET_T.epub");
 //
+
+
 let rendition = book.renderTo("viewer", {
   manager: "continuous",
   flow: "paginated",
-  width: "100%",
-  height: "100%",
-});
+  // width: "100%", 
+  // height: "100%", 
+})
 
 rendition.themes.fontSize("120%");
 const displayed=rendition.display();
@@ -73,8 +75,8 @@ picker.addEventListener('change', (event) => {
     rendition = book.renderTo("viewer", {
       manager: "continuous",
       flow: "paginated",
-      width: "100%",
-      height: "100%",
+      // width: "90%",
+      // height: "90%",
     });
 
     rendition.themes.fontSize("120%");
