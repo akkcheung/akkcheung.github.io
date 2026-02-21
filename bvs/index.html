@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>100 Bible Verses</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <style>
+        :root { --pico-font-size: 100%; }
+        body { padding: 20px 0; }
+        .verse-en { color: var(--pico-muted-color); font-size: 0.9rem; margin-top: 10px; display: block; }
+        .category-tag { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; }
+        article { margin-bottom: var(--pico-spacing); }
+        hgroup h3 { color: var(--pico-primary); }
+    </style>
+</head>
+<body>
+
+<main class="container">
+    <header>
+        <hgroup>
+            <h1>聖經金句 100</h1>
+            <p>100 Inspirational Bible Verses (Chinese & English)</p>
+        </hgroup>
+    </header>
+
+    <div class="grid">
+      <button id="playControlBtn" onclick="togglePlayPause()">▶️ 循環朗讀本頁</button>
+      <button class="secondary outline" onclick="stopPlayback()">⏹ 停止</button>
+    </div>
+
+    <hr />
+    <div id="verse-list"></div>
+
+    <nav aria-label="pagination">
+        <ul>
+            <li><button id="prevBtn" class="outline">上一頁</button></li>
+        </ul>
+        <ul>
+            <li><strong id="page-info"></strong></li>
+        </ul>
+        <ul>
+            <li><button id="nextBtn" class="outline">下一頁</button></li>
+        </ul>
+    </nav>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
