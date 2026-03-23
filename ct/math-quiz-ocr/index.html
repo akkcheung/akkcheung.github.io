@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Draw Game</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+</head>
+<body>
+
+    <div id="game-container">
+        <h1>Math Draw!</h1>
+        <div class="score-board">Score: <span id="score">0</span></div>
+        
+        <h2 id="question-display">Generating...</h2>
+        
+        <canvas id="paintCanvas" width="300" height="300"></canvas>
+        
+        <div class="button-group">
+            <button id="clear-btn">Clear</button>
+            <button id="check-btn" class="primary">Check Answer</button>
+            <button id="next-btn" class="secondary" style="display: none;">Next Round</button>
+        </div>
+        
+        <p id="status-message">Draw your answer above!</p>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -9,10 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const trailMakingLink = document.getElementById('trail-making-link');
     const mirrorGameLink = document.getElementById('mirror-game-link');
     const chartsLink = document.getElementById('charts-link');
+    const mathQuizLink = document.getElementById('math-quiz-link');
 
     function updateGameLinksState() {
         const currentUser = getCurrentUser();
-        const links = [memoryGameLink, reactionGameLink, stroopGameLink, trailMakingLink, mirrorGameLink, chartsLink];
+        const links = [memoryGameLink, reactionGameLink, stroopGameLink, trailMakingLink, mirrorGameLink, chartsLink, mathQuizLink];
 
         if (currentUser) {
             links.forEach(link => {
